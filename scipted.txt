@@ -1,0 +1,75 @@
+************node**************
+
+node{
+    stage("clone"){
+        git branch: 'main', url: 'https://github.com/KishoreN27/sample-node-app.git'
+        sh "ls"
+    }
+    stage("docker image"){
+        sh "docker build -t kishoren27/node-app ."
+    }
+
+    stage("docker hub"){
+        sh "docker  login -u kishoren27 -p KishoreN@2723"
+        sh "docker push kishoren27/node-app"
+    }
+    stage("docker container"){
+        sh "docker  run -d -p 9001:9000 --name node-app kishoren27/node-app"
+    }
+
+}
+
+*********html***************
+
+node{
+    stage("clone ur"){
+        git branch: 'main', url: 'https://github.com/sathish-sempublingam/sample-html-app.git'
+        sh "ls"
+    }
+    stage("build image"){
+        sh "docker build -t html-app ."
+    }
+    stage("docker container"){
+        sh "docker run -d --name html -p 81:80 html-app"
+    }
+}
+
+
+********java**************
+
+node{
+    stage("clone ur"){
+        git branch: 'main', url: 'https://github.com/sathish-sempublingam/sample-java-spring-app.git'
+        sh "ls"
+    }
+    stage("build image"){
+        sh "mvn clean install"
+        sh "docker build -t java-app ."
+    }
+    stage("docker container"){
+        sh "docker run -d --name java -p 8081:8080 java-app"
+    }
+}
+
+
+********python**********
+
+node{
+    stage("clone ur"){
+        git branch: 'main', url: 'https://github.com/sathish-sempublingam/sample-python-app.git'
+        sh "ls"
+    }
+    stage("docker image"){
+        sh "docker build -t python-app ."
+    }
+    stage("docker hub"){
+        sh "docker tag python-app sathishsembulingam/python-app"
+        sh "docker login -u sathishsembulingam -p ssathishmrp105"
+        sh "docker push sathishsembulingam/python-app"
+    }
+    stage("docker container"){
+        sh "docker run -d --name python -p 8001:8000 sathishsembulingam/python-app"
+    }
+    stage("work space"){
+        cleanWs()
+    }}
